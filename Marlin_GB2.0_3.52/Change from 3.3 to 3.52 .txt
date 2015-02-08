@@ -1,6 +1,124 @@
 Latest Version of Marlin for Gigabot
 
-Changes:
+Changes from 3.52 to 3.52V2
+
+Configuration.h
+line 368-372
+// The Panucatt Devices Viki 2.0 and mini Viki with Graphic LCD
+// http://panucatt.com
+// ==> REMEMBER TO INSTALL U8glib to your ARDUINO library folder: http://code.google.com/p/u8glib/wiki/u8glib
+#define VIKI2
+//#define miniVIKI
+
+lines 607-620
+#if defined(miniVIKI) || defined(VIKI2)
+ #define ULTRA_LCD  //general LCD support, also 16x2
+ #define DOGLCD  // Support for SPI LCD 128x64 (Controller ST7565R graphic Display Family)
+ #define ULTIMAKERCONTROLLER //as available from the Ultimaker online store.
+ 
+  #ifdef miniVIKI
+   #define DEFAULT_LCD_CONTRAST 95
+  #else
+   #define DEFAULT_LCD_CONTRAST 40
+  #endif
+  
+ #define ENCODER_PULSES_PER_STEP 4
+ #define ENCODER_STEPS_PER_MENU_ITEM 1
+#endif
+
+Marlinmain.cpp
+574-581
+#ifdef STAT_LED_RED
+  pinMode(STAT_LED_RED, OUTPUT);
+  digitalWrite(STAT_LED_RED, LOW); // turn it off
+#endif
+#ifdef STAT_LED_BLUE
+  pinMode(STAT_LED_BLUE, OUTPUT);
+  digitalWrite(STAT_LED_BLUE, LOW); // turn it off
+#endif 
+
+dodm_lcd_implementation.h
+#elif defined(VIKI2) || defined(miniVIKI)
+// Mini Viki and Viki 2.0 LCD, ST7565 controller as well
+U8GLIB_NHD_C12864 u8g(DOGLCD_CS, DOGLCD_A0);
+
+pins.h
+lines 748-750
+    #else
+      #define STAT_LED_RED       32
+      #define STAT_LED_BLUE      35
+
+lines 785-797
+      #elif defined(VIKI2) || defined(miniVIKI)
+        #define BEEPER 33
+        // Pins for DOGM SPI LCD Support
+        #define DOGLCD_A0  44
+        #define DOGLCD_CS  45
+        #define LCD_SCREEN_ROT_180
+        
+        //The encoder and click button
+        #define BTN_EN1 22
+        #define BTN_EN2 7
+        #define BTN_ENC 39  //the click switch
+     
+        #define SDCARDDETECT -1
+
+lines 1793-1811
+#if defined(VIKI2) || defined(miniVIKI)
+        #define BEEPER 32 //FastIO
+        // Pins for DOGM SPI LCD Support
+        #define DOGLCD_A0  42 //Non-FastIO
+        #define DOGLCD_CS  43 //Non-FastIO
+        #define LCD_SCREEN_ROT_180
+        
+        //The encoder and click button (FastIO Pins)
+        #define BTN_EN1 26 
+        #define BTN_EN2 27
+        #define BTN_ENC 47  //the click switch
+     
+        #define SDCARDDETECT -1 // FastIO  
+#endif
+
+#ifdef TEMP_STAT_LEDS
+      #define STAT_LED_RED      12 //Non-FastIO
+      #define STAT_LED_BLUE     10 //Non-FastIO
+#endif
+
+line 2375 // #define BEEPER 79      // Beeper on AUX-4
+
+lines 2383-2396
+    #if defined(VIKI2) || defined(miniVIKI)
+        #define BEEPER 44
+        // Pins for DOGM SPI LCD Support
+        #define DOGLCD_A0  70 
+        #define DOGLCD_CS  71 
+        #define LCD_SCREEN_ROT_180
+        
+        //The encoder and click button 
+        #define BTN_EN1 85 
+        #define BTN_EN2 84
+        #define BTN_ENC 83  //the click switch
+     
+        #define SDCARDDETECT -1 // Pin 72 if using easy adapter board   
+     #else 
+
+lines 2401-2403
+	 #define SDCARDDETECT 81    // Ramps does not use this port
+      #define BEEPER 79      // Beeper on AUX-4
+    #endif
+
+line 2409     #define SDCARDDETECT 81    // Ramps does not use this port
+
+lines 2452-2455
+  #ifdef TEMP_STAT_LEDS
+      #define STAT_LED_RED      22
+      #define STAT_LED_BLUE     32 
+  #endif
+
+
+
+
+Changes from 3.3 to 3.52
 1) Updated to latest version of Marlin - Improved SD support for Viki!!!
 2) Enabled thermal runaway protection in firmware
 3) Enabled digipots for motor drivers
