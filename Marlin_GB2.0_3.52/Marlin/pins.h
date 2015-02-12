@@ -2880,3 +2880,4 @@ DaveX plan for Teensylu/printrboard-type pinouts (ref teensylu & sprinter) for a
 #define BTN_EN1 7	// Patricks change from Aug 2013 (ceg) old value 22 (mjf)
 #define BTN_EN2 22	// Patricks change from Aug 2013 (ceg) old value 7
 #define BTN_ENC 31      // the click // Patricks change from Aug 2013 (ceg)
+#define PAUSE_PIN 2 // filament out detection pin... (X-max endstop location)
